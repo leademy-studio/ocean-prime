@@ -15,6 +15,9 @@ RUN apt-get update && apt-get install -y \
 # Удаляем стандартный конфиг Nginx, чтобы избежать конфликтов
 RUN rm /etc/nginx/sites-enabled/default
 
+# Запускаем Nginx от имени root, чтобы избежать проблем с правами доступа
+RUN sed -i 's/user www-data;/user root;/' /etc/nginx/nginx.conf
+
 # --- Настройка PHP ---
 # Устанавливаем расширения, необходимые для October CMS / Laravel
 RUN docker-php-ext-install pdo_mysql zip gd
