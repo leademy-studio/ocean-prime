@@ -27,5 +27,5 @@ COPY docker/app/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # --- Запуск ---
-# Указываем, что при старте контейнера должен выполняться наш скрипт
-ENTRYPOINT ["/entrypoint.sh"]
+# Указываем, что при старте контейнера должен выполняться наш скрипт через shell
+CMD ["/entrypoint.sh"]
