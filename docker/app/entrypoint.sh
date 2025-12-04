@@ -8,6 +8,11 @@ set -e
 # Даем ему права на запись в директорию /var/www/html,
 # чтобы установщик October CMS мог создавать файлы.
 chown -R www-data:www-data /var/www/html
+
+# Устанавливаем правильные права: 755 для директорий, 644 для файлов
+find /var/www/html -type d -exec chmod 755 {} \;
+find /var/www/html -type f -exec chmod 644 {} \;
+
 echo "==> Set ownership for /var/www/html"
 
 # --- Запуск основных сервисов ---
