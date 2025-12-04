@@ -27,6 +27,11 @@ WORKDIR /var/www/html
 # --- Копирование исходного кода ---
 COPY ./src /var/www/html/
 
+# Устанавливаем права доступа на скопированные файлы прямо во время сборки
+RUN chown -R www-data:www-data /var/www/html && \
+    find /var/www/html -type d -exec chmod 755 {} \; && \
+    find /var/www/html -type f -exec chmod 644 {} \;
+
 # --- Копирование скрипта запуска ---
 # Копируем entrypoint.sh внутрь контейнера
 COPY docker/app/entrypoint.sh /entrypoint.sh
