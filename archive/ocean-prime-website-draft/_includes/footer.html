@@ -1,0 +1,83 @@
+<section class="section--black">
+    <div class="w-layout-blockcontainer footer w-container">
+      <div class="footer__div__left"><img src="/assets/images/logo-footer.svg" loading="lazy" width="150" alt="Логотип Ocean Prime">
+        <div class="footer__menu-list">
+          <div class="w-layout-grid grid">
+            <div class="footer__menu-item">
+              <div class="footer__menu-item__heading">
+                <h4 class="heading-6">Яхтенное управление</h4>
+              </div>
+              {%- if pagination and pagination.data -%}
+                {% set services_list = pagination.data %}
+              {%- else -%}
+                {% set services_list = managementServices %}
+              {%- endif -%}
+              {% if services_list %}
+              <div class="footer__menu-list__points">
+                {% for service in services_list | sortBy('sortOrder') %}
+                <a href="/management/{{ service.Slug | slug }}/" class="link-block-7 w-inline-block">
+                  <div class="text--white">{{ service.Name }}</div>
+                </a>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+            <div class="footer__menu-item">
+              <div class="footer__menu-item__heading">
+                <h4 class="heading-6">Услуги</h4>
+              </div>
+              <div class="footer__menu-list__points">
+                <a href="/build/" class="link-block-7 w-inline-block">
+                  <div class="text--white">Строительство</div>
+                </a>
+                <a href="/sales/" class="link-block-7 w-inline-block">
+                  <div class="text--white">Продажи</div>
+                </a>
+                <a href="/charter/" class="link-block-7 w-inline-block">
+                  <div class="text--white">Чартер</div>
+                </a>
+              </div>
+            </div>
+            <div class="footer__menu-item">
+              <div class="footer__menu-item__heading">
+                <h4 class="heading-6">Компания</h4>
+              </div>
+              <div class="footer__menu-list__points">
+                <a href="/about-us/" class="link-block-7 w-inline-block">
+                  <div class="text--white">О компании</div>
+                </a>
+              </div>
+            </div>
+            <div class="footer__menu-item">
+              <div class="footer__menu-item__heading">
+                <h4 class="heading-6">Контакты</h4>
+              </div>
+              <div class="footer__menu-list__points">
+                <a href="tel:+74953297777" class="link">+7 495 329 77 77</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-div-consents">
+          <div class="text-block-5">© Ocean Prime, все права защищены</div>
+          <a href="/privacy-policy/" class="link-block-8 w-inline-block">
+            <div class="text-block-5">Политика конфиденциальности</div>
+          </a>
+        </div>
+      </div>
+      <div class="subscribe-div">
+        <div class="footer-div__img">
+          <div class="text--white">Подпишитесь на рассылку, чтобы получать актуальную информацию прямо на вашу почту.</div>
+          <div class="form-block-6 w-form">
+            <form id="email-form-2" name="email-form-2" data-name="Email Form 2" method="get" class="form-8" data-wf-page-id="677b6f63bec549c00ac25e26" data-wf-element-id="05e06994-cd70-6b84-d331-da8bf59fd205"><input class="text-field-4 w-input" maxlength="256" name="email" data-name="Email" placeholder="Введите ваш email" type="email" id="email" required=""><input type="submit" data-wait="Загрузка..." class="submit-button-6 w-button" value="Подписаться"></form>
+            <div class="w-form-done">
+              <div>Thank you! Your submission has been received!</div>
+            </div>
+            <div class="w-form-fail">
+              <div>Oops! Something went wrong while submitting the form.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>

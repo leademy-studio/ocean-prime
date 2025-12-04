@@ -1,0 +1,227 @@
+---
+layout: base.njk
+title: Ocean Prime — Яхтенный менеджмент
+---
+  <section class="section-hero">
+    <div data-poster-url="/assets/videos/0310-poster-00001.jpg" data-video-urls="/assets/videos/0310-transcode.mp4,/assets/videos/0310-transcode.webm" data-autoplay="true" data-loop="true" data-wf-ignore="true" class="background-video w-background-video w-background-video-atom"><video id="fae9b440-c346-d408-888f-73e20d0d6497-video" autoplay="" loop="" style="background-image:url(&quot;/assets/videos/0310-poster-00001.jpg&quot;)" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover">
+        <source src="/assets/videos/0310-transcode.mp4" data-wf-ignore="true">
+        <source src="/assets/videos/0310-transcode.webm" data-wf-ignore="true">
+      </video></div>
+    <div data-w-id="98ba8976-4569-7639-ef96-9ceb1076dc71" style="opacity:0;filter:blur(10px)" class="w-layout-blockcontainer hero-container w-container">
+      <div class="hero-text__div"><img src="/assets/images/Frame-427319118.svg" loading="lazy" style="opacity:0;filter:blur(10px)" data-w-id="a04e47c3-1761-e807-762a-4d47844cc08b" alt="Ocean Prime: Комплексное яхтенное управление." class="image-8">
+        <h1 class="heading1">НАША МИССИЯ</h1>
+        <div class="text-white--hero">Комплексные решения для яхт класса люкс: от управления и обслуживания до подбора экипажа и персонализированного консьерж-сервиса.</div>
+        <a data-w-id="05adbf05-fc3c-327d-3f99-19418fef6c2c" href="#" class="button w-button">Заказать консультацию</a>
+      </div>
+    </div>
+  </section>
+  <section class="section--white">
+    <div class="w-layout-blockcontainer section-2-container w-container">
+      <div class="section-2-text-wrap">
+        <div class="heading-2-div">
+          <h2 class="heading-2">Ваш комфорт – наша забота. Управляем всем, чтобы отдых стал незабываемым.</h2>
+        </div>
+        <div class="section-text">Свою миссию наша команда видит в том, чтобы взять все повседневные заботы судовладельца на себя, оставив ему только одну - получать удовольствие.</div>
+      </div><img src="/assets/images/second-section_1.avif" loading="lazy" sizes="(max-width: 767px) 100vw, (max-width: 991px) 728px, 940px" srcset="/assets/images/second-section_1second-section.avif 500w, /assets/images/second-section_1second-section.avif 800w, /assets/images/second-section_1.avif 1200w" alt="Интерьер яхты">
+      <div class="section-2-feautures-wrap">
+        <div class="section-2-feature-item">
+          <h3 class="heading-3">15+</h3>
+          <div class="section-text-advantage">лет опыта<br>в сфере яхтенного менеджмента. </div>
+        </div>
+        <div class="section-2-feature-item">
+          <h3 class="heading-3">400</h3>
+          <div class="section-text-advantage">высококвалифицированных специалистов <br>с международной экспертизой.</div>
+        </div>
+        <div class="section-2-feature-item">
+          <h3 class="heading-3">30</h3>
+          <div class="section-text-advantage"> яхт ведущих мировых верфей <br>под управлением.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="w-layout-blockcontainer container__services-list w-container">
+      <div class="services-list-container">
+        <h2 class="services-heading black">Услуги</h2>
+      </div>
+      <div class="div-block-28 w-dyn-items">
+        {% for service in managementServices | sortBy('sortOrder') %}
+          <div data-w-id="f31e60f8-de0e-38a8-69d4-d25ed9e45337" style="background-color:rgb(245,246,247);color:rgb(48,47,46)" role="listitem" class="service-item w-dyn-item">
+            <a href="/management/{{ service.Slug | slug }}/" class="service-item-div w-inline-block">
+              <div class="div-block-30"><img src="/assets/images/logo.svg" loading="lazy" style="opacity:1" alt="Логотип" class="image-27"></div>
+              <p data-w-id="369b7005-e050-bd15-77bb-ee77688955ab" style="-webkit-transform:translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform-style:preserve-3d" class="services-text">{{ service.Name }}</p><img src="/assets/images/logo-services-2.svg" loading="lazy" style="-webkit-transform:translate3d(0, 0, 0) scale3d(1.2, 1.2, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(1.2, 1.2, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(1.2, 1.2, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(1.2, 1.2, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform-style:preserve-3d;filter:blur(4px);opacity:0" alt="Логотип услуги" class="image-28">
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="div-block-31"><img src="/assets/images/about-2.jpg" loading="lazy" sizes="(max-width: 672px) 100vw, 672px" srcset="/assets/images/about-2-p-500.jpg 500w, /assets/images/about-2.jpg 672w" alt="О нас" class="image-25">
+        <div class="div-block-32"><img src="/assets/images/section-5-img.jpg" loading="lazy" alt="Изображение секции" class="image-26">
+          <p class="paragraph-21">Наша компания была основана с одной целью — сделать управление яхтами простым, безопасным и комфортным для их владельцев. На протяжении многих лет мы строили свою репутацию, объединяя профессионализм, инновации и страсть к морю. Мы гордимся тем, что создали уникальный сервис, который сочетает в себе лучшее из традиционного яхтинга и современных технологий.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section-4">
+    <div class="w-layout-blockcontainer section-4-container w-container">
+      <div class="section-4-div">
+        <div class="section-4-div-sticky">
+          <h2 class="section-4-heading">РЯДОМ <strong class="bold-text">24/7</strong></h2>
+          <div class="combine-text-size-regular">Высокие стандарты, поддерживаемые на борту яхт под управлением Ocean Prime, требуют от нас полной осведомленности и вовлеченности во все процессы, поэтому мы тесно сотрудничаем с офисом судовладельца, капитаном и экипажем.<br>Наши специалисты доступны для обращения ежедневно и круглосуточно, в любой точке страны,чтобы вы могли чувствовать наше участие и защиту даже в самых непредсказуемых ситуациях.<br>Мы привыкли отвечать за результаты своей работы и гордимся ими, когда, очередной раз ступив на борт своей яхты, клиент признается: она соответствующего ожиданиям и даже превосходит их.</div>
+          <a data-w-id="cb336a12-d7fd-1992-f434-96c34a93ef3f" href="#" class="combine-button-icon w-inline-block">
+            <div class="combine-button-content">
+              <div>Связаться с менеджером</div>
+              <div class="combine-chevron-right_icon w-embed"><svg width="100%" height="currentHeight" viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6.83301 13L11.833 8L6.83301 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg></div>
+            </div>
+          </a>
+        </div>
+        <div class="w-layout-grid section-4-img-list">
+          <div class="section-4-img-item"></div>
+          <div class="section-4-img-item-2"></div>
+          <div class="section-4-img-item-3"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section--black">
+    <div class="w-layout-blockcontainer section-5-container w-container">
+      <div class="section-5-div">
+        <div class="section-5-text-wpap">
+          <h2 class="heading-2 black">Совершенство в деталях – наш стандарт</h2>
+          <div class="section-5-text">Наша компания была основана с одной целью — сделать управление яхтами простым, безопасным и комфортным для их владельцев. На протяжении многих лет мы строили свою репутацию, объединяя профессионализм, инновации и страсть к морю. Мы гордимся тем, что создали уникальный сервис, который сочетает в себе лучшее из традиционного яхтинга и современных технологий.</div>
+        </div><img src="/assets/images/maing-page4.jpg" loading="lazy" sizes="(max-width: 767px) 100vw, (max-width: 991px) 728px, 940px" srcset="/assets/images/maing-page4-p-500.jpg 500w, /assets/images/maing-page4-p-800.jpg 800w, /assets/images/maing-page4.jpg 955w" alt="Яхта в море" class="image-15">
+      </div>
+    </div>
+  </section>
+  <section class="section--black">
+    <div class="w-layout-blockcontainer container__section-6 w-container">
+      <div class="section6__content-wrap">
+        <h2 class="heading2--white">Индивидуальные решения</h2><img src="/assets/images/yacht-management-01-1.jpg_1.avif" loading="lazy" data-w-id="0fc06508-cd81-d641-4087-e8b6f66194ff" sizes="100vw" alt="Управление яхтой" srcset="/assets/images/yacht-management-01-1.jpg_1yacht-management-01-1.jpg.avif 500w, /assets/images/yacht-management-01-1.jpg_1yacht-management-01-1.jpg.avif 800w, /assets/images/yacht-management-01-1.jpg_1.avif 1800w" class="section-6-img">
+        <div class="section6__text-wrap">
+          <div class="text--white">SAP - это комплексное модульное решение, позволяющее настроить работу всех систем на судне с учетом его специфики и потребностей владельца. Документы имеют понятную структуру и подробно описывают все процедуры, связанные с управлением яхтой и персоналом.</div>
+          <div class="text--white">С помощью современной системы Microsoft Dynamics NAV мы производим расчеты с контрагентами, осуществляем управление коллективом, проектами (судно, чартер), запасами, формируем аналитические отчеты.</div>
+        </div>
+        <div class="section6__form">
+          <div class="section6__form__wrap-main">
+            <div class="section6__form__wrap">
+              <div class="section6__form__div">
+                <h3 class="heading3--white">Стройте карьеру с нами</h3>
+                <div class="text--white form">Присоединяйтесь к команде профессионалов, увлеченных морем и сервисом высокого уровня. Мы ценим стремление к развитию, инициативность и любовь к своему делу.</div>
+              </div>
+              <a data-w-id="34020720-9db6-fe70-5397-fb5afb23570c" href="#" class="section6__button w-inline-block">
+                <div class="button-text--black">Подробнее</div><img src="/assets/images/button-arrow-black.svg" loading="lazy" width="12" alt="Стрелка" class="button-arrow--black">
+              </a>
+            </div><img src="/assets/images/main-page.avif" loading="lazy" alt="Карьера в Ocean Prime" class="section-6-img-form">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section--white">
+    <div class="w-layout-blockcontainer container__section7 w-container">
+      <div class="section7__heading-wrap">
+        <h2 class="heading2">Решения <br>для всех этапов вашего пути</h2>
+      </div>
+      <div class="section7_animated-wrap">
+        <div class="section7__div-bg-gradient--top"></div>
+        <div class="section7__div-bg-gradient"></div>
+        <div class="section7__list-wrap">
+          <div class="text--black-animated">Операционное управление<br></div>
+          <div class="text--black-animated">Юридическое сопровождение</div>
+          <div class="text--black-animated">Технический менеджмент</div>
+          <div class="text--black-animated">Финансовый менеджмент</div>
+          <div class="text--black-animated">Интерьерный менеджмент</div>
+          <div class="text--black-animated">Подбор экипажа</div>
+          <div class="text--black-animated">Управление экипажем</div>
+          <div class="text--black-animated">Оформление документации</div>
+          <div class="text--black-animated">Страховое сопровождение</div>
+          <div class="text--black-animated">Кибербезопасность</div>
+          <div class="text--black-animated">Разработка регламента управления яхтой</div>
+          <div class="text--black-animated">Консьерж-сервис</div>
+          <div class="text--black-animated">Чартер</div>
+          <div class="text--black-animated">Продажи</div>
+          <div class="text--black-animated">Строительство</div>
+        </div>
+        <div class="section7__list-wrap">
+          <div class="text--black-animated">Операционное управление</div>
+          <div class="text--black-animated">Юридическое сопровождение</div>
+          <div class="text--black-animated">Технический менеджмент</div>
+          <div class="text--black-animated">Финансовый менеджмент</div>
+          <div class="text--black-animated">Интерьерный менеджмент</div>
+          <div class="text--black-animated">Подбор экипажа</div>
+          <div class="text--black-animated">Управление экипажем</div>
+          <div class="text--black-animated">Оформление документации</div>
+          <div class="text--black-animated">Страховое сопровождение</div>
+          <div class="text--black-animated">Кибербезопасность</div>
+          <div class="text--black-animated">Разработка регламента управления яхтой</div>
+          <div class="text--black-animated">Консьерж-сервис</div>
+          <div class="text--black-animated">Чартер</div>
+          <div class="text--black-animated">Продажи</div>
+          <div class="text--black-animated">Строительство</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section--blue">
+    <div class="w-layout-blockcontainer container__section8 w-container">
+      <div class="section8__first-row-wrap-div"><img src="/assets/images/section8-1.jpg" loading="lazy" width="Auto" height="Auto" alt="Яхта на воде" class="image-4"><img src="/assets/images/section8-2.jpg" loading="lazy" width="Auto" height="Auto" alt="Девушка на яхте" srcset="/assets/images/section8-2-p-500.jpg 500w, /assets/images/section8-2.jpg 792w" sizes="100vw" class="image-5">
+        <div data-poster-url="/assets/videos/0611-poster-00001.jpg" data-video-urls="/assets/videos/0611-transcode.mp4,/assets/videos/0611-transcode.webm" data-autoplay="true" data-loop="true" data-wf-ignore="true" class="background-video-3 w-background-video w-background-video-atom"><video id="cae297db-903b-af5c-e4aa-3913431140ee-video" autoplay="" loop="" style="background-image:url(&quot;/assets/videos/0611-poster-00001.jpg&quot;)" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover">
+            <source src="/assets/videos/0611-transcode.mp4" data-wf-ignore="true">
+            <source src="/assets/videos/0611-transcode.webm" data-wf-ignore="true">
+          </video></div>
+      </div>
+      <div class="section8__second-row-div">
+        <div class="div-block-2"><img src="/assets/images/section8-3.jpg" loading="lazy" width="384" height="244" alt="Интерьер яхты" class="image-6">
+          <div data-poster-url="/assets/videos/03121-poster-00001.jpg" data-video-urls="/assets/videos/03121-transcode.mp4,/assets/videos/03121-transcode.webm" data-autoplay="true" data-loop="true" data-wf-ignore="true" class="background-video-4 w-background-video w-background-video-atom"><video id="bcf9839d-4208-88c8-7912-ecc6fe2d6e6b-video" autoplay="" loop="" style="background-image:url(&quot;/assets/videos/03121-poster-00001.jpg&quot;)" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover">
+              <source src="/assets/videos/03121-transcode.mp4" data-wf-ignore="true">
+              <source src="/assets/videos/03121-transcode.webm" data-wf-ignore="true">
+            </video></div>
+          <div class="text-section8">Доверьте нам заботу о вашей яхте, чтобы вы могли сосредоточиться на том, что действительно важно – наслаждении морскими приключениями.</div>
+        </div><img src="/assets/images/section8-4_1.avif" loading="lazy" sizes="100vw" srcset="/assets/images/section8-4_1section8-4.avif 500w, /assets/images/section8-4_1.avif 792w" alt="Яхта в движении" class="image-2">
+      </div>
+    </div>
+  </section>
+  <section class="section--black">
+    <div class="w-layout-blockcontainer section8__container w-container">
+      <div class="section8__div">
+        <div class="section8__div__map">
+          <div class="section8__div__map__wrap">
+            <div class="section8__div__map__wrap__adress">
+              <div class="section8__div__street-name"><img src="/assets/images/Location-pin.svg" loading="lazy" alt="Иконка местоположения" class="image-12">
+                <div class="text--white">г. Москва, пер. Турчанинов, д.6, стр.2</div>
+              </div>
+              <a href="https://yandex.ru/maps/-/CHrpnT8L" target="_blank" class="link-block--wide w-inline-block">
+                <div class="text">Маршрут</div><img src="/assets/images/Arrow-3.svg" loading="lazy" width="12" alt="Стрелка" class="button-arrow">
+              </a>
+            </div>
+            <div class="section8__map">
+              <div class="code-embed w-embed w-script">
+                <script type="text/javascript" charset="utf-8" async="" src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Adcf15ef8c395090c0ec2722315712c0de928dffc70742e60eb8fdbbc9adab5fb&amp;width=100%&amp;height=100%&amp;lang=ru_RU&amp;scroll=true"></script>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section8__form">
+        <div class="section8__form__heading__div">
+          <div class="section8__heading3">Остались вопросы? </div>
+        </div>
+        <div class="form-block-div">
+          <div class="form-block-4 w-form">
+            <form id="email-form" name="email-form" data-name="Email Form" method="get" class="form-5" data-wf-page-id="677b6f63bec549c00ac25e26" data-wf-element-id="723af1f6-669f-3696-4b9c-cb1768ab0602"><input class="section8__form__input w-input" maxlength="256" name="name-2" data-name="Name 2" placeholder="Имя" type="text" id="name-2" required=""><input class="section8__form__input w-input" maxlength="256" name="Phone-Number-2" data-name="Phone Number 2" placeholder="Номер телефона" type="tel" id="Phone-Number-2" required=""><input type="submit" data-wait="Please wait..." class="submit-button-2 w-button" value="Заказать консультацию">
+              <div class="submit__div"><label class="w-checkbox checkbox-field">
+                  <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-2 w--redirected-checked"></div><input type="checkbox" id="checkbox-2" name="checkbox-2" data-name="Checkbox 2" required="" style="opacity:0;position:absolute;z-index:-1" checked=""><span class="checkbox-label-2 w-form-label" for="checkbox-2">Согласен(а) на обработку персональных данных</span>
+                </label></div>
+            </form>
+            <div class="w-form-done">
+              <div>Спасибо! Представитель компании Ocean Prime свяжется с вами в ближайшее время.</div>
+            </div>
+            <div class="w-form-fail">
+              <div>Произошла ошибка, попробуйте еще раз.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

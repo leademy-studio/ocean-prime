@@ -1,0 +1,422 @@
+/* Стили для контейнера хедера */
+.site-header {
+    background-color: var(--white);
+    width: 100%;
+    font-family: 'Jost', Impact, sans-serif;
+    font-weight: 400;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Хедер будет поверх других элементов */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Легкая тень для визуального отделения */
+}
+
+/* 
+  Универсальный класс для ограничения и центрирования контента.
+  Стилизация через .site-header .container сделана, чтобы уменьшить вероятность
+  конфликта с существующим классом .container из Webflow.
+
+
+/* Стили для основной рабочей области хедера */
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+/* Стили для логотипа */
+.logo a {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 40px; /* Высота логотипа */
+    width: auto;
+}
+
+/* Стили для навигации */
+.main-nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 30px; /* Расстояние между пунктами меню */
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    font-weight: 400;
+    transition: color 0.3s ease-in-out;
+}
+
+.main-nav a:hover {
+    color: #333; /* Цвет при наведении */
+}
+
+/* Контейнер для правой части хедера (нав + телефон) */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+/* Стили для выпадающего меню */
+
+.nav-item-dropdown {
+  /* Оставляем position: static, чтобы дочерний .nav-dropdown 
+     позиционировался относительно .site-header */
+}
+
+.nav-link-dropdown {
+  /* Добавляем стрелочку для индикации выпадающего меню */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.nav-link-dropdown::after {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-left: 1.5px solid #333;
+  border-bottom: 1.5px solid #333;
+  transform: rotate(-45deg);
+  transition: transform 0.3s ease;
+  margin-bottom: 3px;
+}
+
+.nav-item-dropdown.is-open .nav-link-dropdown::after {
+  transform: rotate(135deg);
+  margin-bottom: -1px;
+}
+
+/* Контейнер выпадающего меню */
+.nav-dropdown {
+  background-color: white;
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 100%; /* Появляется сразу под хедером */
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+  border-top: 1px solid #f0f0f0;
+  /* Свойства для анимации */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+}
+
+/* Показываем меню при наличии класса is-open */
+.nav-item-dropdown.is-open > .nav-dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Сетка с элементами меню */
+.nav-dropdown__grid {
+  display: grid;
+  grid-column-gap: 32px;
+  grid-row-gap: 16px;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  padding: 32px 0; /* Убираем боковые отступы, так как они есть у .container */
+}
+
+/* Плитка меню */
+.nav-dropdown__item {
+  display: flex; /* Изменено на flex */
+  flex-direction: column; /* Добавлено */
+  flex: 0 auto; /* Добавлено */
+  width: 340px; /* Добавлено */
+  min-width: 30%; /* Добавлено */
+  /*  background-color: #f5f6f9; /* var(--black-bg) */
+  color: #333;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  overflow: hidden; /* Для корректного отображения border-radius с изображением */
+}
+
+.nav-dropdown__item:hover {
+  transform: translateY(-1px);
+  transition: transform 0.3s ease;
+
+}
+.nav-dropdown__grid {
+  display: grid;
+  grid-column-gap: 32px;
+  grid-row-gap: 16px;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  padding: 32px; /* Изменено на 32px со всех сторон */
+}
+/* Контейнер изображения внутри плитки */
+.nav-dropdown__item-image-container {
+  width: 100%;
+  height: 190px; /* Фиксированная высота для изображения */
+  overflow: hidden;
+  position: relative; /* Для позиционирования оверлея */
+  flex-shrink: 0; /* Предотвращает сжатие изображения */
+}
+
+/* Изображение внутри плитки */
+.nav-dropdown__item-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Обрезает изображение, чтобы оно полностью покрывало контейнер */
+  display: block; /* Убирает лишний отступ под изображением */
+  transition: filter 300ms ease;
+}
+
+/* Оверлей с логотипом, который появляется при наведении */
+.nav-dropdown__item-overlay-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-position: 50%;
+  background-size: cover;
+  object-fit: contain; /* Чтобы логотип не искажался */
+  opacity: 0;
+  transition: opacity 300ms ease;
+  z-index: 1;
+}
+
+.nav-dropdown__item:hover .nav-dropdown__item-image {
+  filter: blur(1px);
+}
+
+.nav-dropdown__item:hover .nav-dropdown__item-overlay-image {
+  opacity: 1;
+}
+
+/* Контейнер для текстового содержимого */
+.nav-dropdown__item-text-content {
+  /*   padding: 16px 24px;/*/
+  flex-grow: 1; /* Позволяет текстовому блоку занимать оставшееся пространство */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Распределяет заголовок и описание */
+}
+
+/* Заголовок направления в карточке */
+.nav-dropdown__item-title {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 1.215rem;
+  font-weight: 400;
+  margin: 0; /* Сброс стандартных отступов параграфа */
+  color: #0e2742; /* Цвет из оригинального h4 */
+}
+
+/* Описание направления в карточке */
+.nav-dropdown__item-description {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.5;
+  margin-bottom: 0;
+  color: #5f6570; /* var(--combine-library--grey-600) */
+  margin-top: 0; /* Сброс стандартных отступов параграфа */
+}
+
+.nav-dropdown__all-directions-link {
+  position: relative;
+  font-size: 1.215rem;
+  font-weight: 400;
+  color: #0e2742;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  align-self: center;
+}
+
+.grey {
+  color: #3a3a3a;
+}
+
+/* Стили для номера телефона */
+.header-phone {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1em;
+    color: #333;
+    text-decoration: none;
+    white-space: nowrap; /* Чтобы номер не переносился */
+    transition: color 0.2s ease-in-out;
+}
+
+.header-phone:hover { color: #0052ff; }
+
+/* Стили для кнопки-бургера (скрыта на десктопе) */
+.header-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+}
+
+.header-burger__line {
+  width: 30px;
+  height: 2px;
+  background-color: #333;
+  border-radius: 10px;
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
+}
+
+/* Анимация бургера в крестик */
+.header-burger.is-open .header-burger__line:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.header-burger.is-open .header-burger__line:nth-child(2) {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.header-burger.is-open .header-burger__line:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+/* Класс для body, чтобы блокировать скролл при открытом меню */
+body.mobile-menu-open {
+  overflow: hidden;
+}
+
+/* Адаптивные стили для мобильных устройств */
+@media (max-width: 1199px) {
+  /* Показываем бургер и скрываем навигацию */
+  .header-burger {
+    display: flex;
+  }
+
+  .header-right {
+    display: none; /* Скрываем по умолчанию */
+    position: fixed;
+    top: 72px; /* Высота хедера */
+    left: 0;
+    width: 100%;
+    height: auto;
+    background-color: white;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px 20px;
+    gap: 40px;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .header-right.is-open {
+    display: flex;
+    transform: translateX(0);
+  }
+
+  /* Если выпадающее меню раскрыто, задаем контейнеру высоту экрана для скролла.
+     В свернутом состоянии высота останется auto. */
+  .header-right.is-open:has(.nav-item-dropdown.is-open) {
+    height: calc(100vh - 72px);
+  }
+
+  /* Стили для навигации в мобильном меню */
+  .main-nav ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    width: 100%;
+  }
+  
+  .main-nav li {
+    width: 100%;
+    text-align: center;
+  }
+
+  .main-nav a {
+    font-size: 20px;
+  }
+
+  /* Центрируем текст в ссылке с выпадающим меню */
+  .nav-link-dropdown {
+    justify-content: center;
+  }
+
+  .header-phone {
+    padding: 0;
+    font-size: 20px;
+  }
+
+  /* Адаптация выпадающего меню */
+  .nav-dropdown {
+    position: static;
+    display: block;
+    box-shadow: none;
+    border-top: none;
+    background-color: transparent;
+    /* Свойства для аккордеон-анимации */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, padding-top 0.4s ease-out;
+  }
+  
+  .nav-item-dropdown.is-open > .nav-dropdown {
+    padding-top: 20px;
+    max-height: 2000px; /* Достаточная высота для всего содержимого */
+  }
+
+  .nav-dropdown .container {
+    padding: 0;
+    max-width: 100%;
+  }
+
+  .nav-dropdown__grid {
+    grid-template-columns: 1fr 1fr;
+    padding: 0;
+    gap: 20px;
+  }
+
+  .nav-dropdown__item {
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+}
+
+/* Стили для последнего элемента выпадающего меню */
+.nav-dropdown__grid .nav-dropdown__item:last-child .nav-dropdown__item-image-container {
+  background-color: #fafafa;
+}
+
+.nav-dropdown__grid .nav-dropdown__item:last-child .nav-dropdown__item-image {
+  object-fit: contain;
+  transition: opacity 300ms ease;
+}
+
+/* Отменяем размытие и скрываем базовое изображение при наведении на последний элемент */
+.nav-dropdown__grid .nav-dropdown__item:last-child:hover .nav-dropdown__item-image {
+  filter: none;
+  opacity: 0;
+}

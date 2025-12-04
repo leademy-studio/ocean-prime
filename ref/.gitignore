@@ -1,0 +1,75 @@
+0,0 @@
+# =================================================================
+# Общие правила
+# =================================================================
+
+# Файлы окружения (содержат секреты)
+.env
+.env.backup
+.env.*
+!.env.example
+
+# Файлы IDE
+.idea/
+.vscode/
+nbproject/
+sftp-config.json
+.ftpconfig
+
+# Файлы ОС
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+
+# Различные лог-файлы
+*.log
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+
+# Файлы локальной разработки
+Homestead.json
+Homestead.yaml
+.vagrant/
+
+# =================================================================
+# Файлы в корне проекта
+# =================================================================
+
+# SSL-сертификаты
+/docker/traefik/certs/
+
+# Архивные файлы (экспорты Webflow и т.д.)
+/archive/
+
+# Скрипт деплоя. Можно закомментировать, если хотите хранить его в Git.
+# deploy.sh
+
+# =================================================================
+# Файлы проекта OctoberCMS (в папке /october)
+# =================================================================
+
+# Зависимости
+october/vendor/
+october/node_modules/
+october/composer.lock
+october/package-lock.json
+october/auth.json
+
+# Хранилище (кэш, логи, загруженные файлы)
+october/storage/
+october/bootstrap/cache/
+
+# Файлы для IDE и отладки
+october/_ide_helper.php
+october/.phpstorm.meta.php
+october/.phpunit.result.cache
+october/diag.php
+
+# Старые файлы окружения OctoberCMS
+october/.env.php
+october/.env.*.php

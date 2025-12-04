@@ -1,0 +1,2263 @@
+/*
+ * Глобальное правило для модели бокса, как в Webflow.
+ * Это исправляет проблему с "лишними" отступами.
+*/
+* {
+  box-sizing: border-box;
+}
+/* Убираем отступы по умолчанию у body */
+body {
+  margin: 0;
+  
+}body, .body, button, input, select, textarea {
+  font-family: 'Jost', sans-serif;
+}
+
+/* Layout */
+.section {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  overflow: clip;
+}
+
+.section--hero {
+  height: 100vh;              /* вместо 85vh — полный экран */
+  padding: 0;
+  position: relative;
+  background-color: rgba(0,0,0,.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Фон-видео контейнер */
+.section--hero .background-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  /* можно добавить градиент при необходимости:
+     /* background: linear-gradient(#00000080,#00000080); */
+}
+
+/* Сбрасываем некорректный inset и растягиваем само видео */
+.w-background-video > video,
+.section--hero .background-video video {
+  position: absolute;
+  inset: 0;            /* было -100% */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+  z-index: -1;
+}
+
+.section--white {
+  background-color: var(--white);
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.section--black {
+  background-color: var(--black, #000);
+}
+
+
+
+
+.section--light-gray {
+  background-color: var(--combine-library--grey-050);
+  align-items: flex-start;
+}
+/* Containers */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* Desktop-first: по умолчанию меню показано, а кнопка-бургер скрыта */
+.site-nav__menu,
+.spark-nav-with-mega-dropdowns {
+  display: flex;
+}
+
+.site-nav__button,
+.spark-simple-menu-button {
+  display: none;
+}
+
+/* ===== Header: w-nav burger for <=1200px ===== */
+
+/* Desktop: меню видно, бургер скрыт (сохранено) */
+.website-header.w-nav .w-nav-menu { display: flex; }
+.website-header.w-nav .w-nav-button { display: none; }
+
+/* Mobile/tablet <=1200px: прячем меню, показываем бургер */
+@media screen and (max-width: 1200px) {
+  .website-header.w-nav .w-nav-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: var(--spark-library--white);
+    box-shadow: 0 20px 40px #00000014;
+    z-index: 99;
+    width: 100%;
+    /* наследуем ваши отступы/стили */
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 2rem 1rem 1rem;
+  }
+  .website-header.w-nav .w-nav-menu.is-open { display: block; }
+
+  .website-header.w-nav .w-nav-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 0;
+    padding: 0 0 0 18px;
+    width: 60px; height: 60px;
+    cursor: pointer;
+  }
+
+  /* Линии бургера и анимация открытого состояния */
+  .w-nav-button .spark-line-1,
+  .w-nav-button .spark-line-2,
+  .w-nav-button .spark-line-3 {
+    background-color: var(--black, #000);
+    width: 35px; height: 2px;
+    margin-left: auto; margin-right: auto;
+    position: absolute; left: 0; right: 0;
+    transition: transform .3s ease, opacity .2s ease, width .2s ease, height .2s ease;
+  }
+  .w-nav-button .spark-line-1 { top: 10px; z-index: 2; }
+  .w-nav-button .spark-line-2 { top: 20px; z-index: 1; }
+  .w-nav-button .spark-line-3 { top: 30px; z-index: 2; }
+
+  /* Стили “simple-line” на мобиле (как в исходнике) */
+  .w-nav-button .spark-line-1.spark-simple-line,
+  .w-nav-button .spark-line-2.spark-simple-line,
+  .w-nav-button .spark-line-3.spark-simple-line {
+    background-color: var(--black, #000);
+    border-radius: 3px;
+    height: 3.33px;
+  }
+  .w-nav-button .spark-line-1.spark-simple-line { width: 24px; top: 18px; }
+  .w-nav-button .spark-line-2.spark-simple-line { width: 24px; top: 28px; }
+  .w-nav-button .spark-line-3.spark-simple-line { width: 12.75px; top: 38px; margin-left: 18px; }
+
+  /* Состояние открыт (поддерживаем оба класса: w--open и is-open) */
+  .w-nav-button.w--open .spark-line-1,
+  .spark-simple-menu-button.is-open .spark-line-1 {
+    transform: translateY(10px) rotate(45deg);
+  }
+  .w-nav-button.w--open .spark-line-2,
+  .spark-simple-menu-button.is-open .spark-line-2 {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  .w-nav-button.w--open .spark-line-3,
+  .spark-simple-menu-button.is-open .spark-line-3 {
+    transform: translateY(-10px) rotate(-45deg);
+    width: 24px; height: 3.33px; margin-left: 0;
+  }
+
+  /* Оверлей w-nav (если понадобится) */
+  .w-nav-overlay {
+    position: absolute;
+    overflow: hidden;
+    display: none;
+    top: 100%;
+    left: 0; right: 0;
+    width: 100%;
+    z-index: 98;
+  }
+  .w-nav-overlay [data-nav-menu-open] { top: 0; }
+}
+
+/* Fallback для переменной --black */
+:root { --black: #000; }
+
+/* Адаптивные стили для хедера (бургер-меню) */
+@media screen and (max-width: 1199px) {
+  /* Показываем бургер-кнопку */
+  .site-nav__button,
+  .spark-simple-menu-button {
+    display: inline-flex;
+  }
+
+  /* Скрываем меню по умолчанию */
+  /* Гарантированно скрываем меню, если оно не открыто */
+  .spark-nav-with-mega-dropdowns:not(.is-open) {
+    display: none; 
+  }
+
+  /* Показываем открытое меню (класс is-open добавляется через JS) */
+  .spark-nav-with-mega-dropdowns.is-open {
+    display: block;
+  }
+}
+
+/* Адаптивные отступы для контейнера */
+/* Адаптивные стили для хедера (бургер-меню) */
+@media screen and (max-width: 1199px) {
+  .website-header,
+  .site-nav {
+    padding-left: 32px;
+    padding-right: 32px;
+    z-index: 10;
+  }
+
+  .spark-square-menu-inner {
+    padding: 0;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+
+  .site-nav__menu,
+  .spark-nav-with-mega-dropdowns {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap: 16px;
+    background-color: var(--spark-library--white);
+    padding: 2rem 1rem 1rem;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    box-shadow: 0 20px 40px #00000014;
+    z-index: 99;
+    display: none;
+  }
+
+  .spark-nav-with-mega-dropdowns.is-open {
+    display: block;
+  }
+
+  .site-nav__button,
+  .spark-simple-menu-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    padding-left: 18px;
+    margin-left: auto; /* Добавляем это свойство, чтобы прижать кнопку вправо */
+  }
+
+  .spark-simple-menu-button.w--open {
+    background-color: transparent;
+  }
+
+  .spark-line-1.spark-simple-line,
+  .spark-line-2.spark-simple-line {
+    background-color: var(--black);
+    border-radius: 2px;
+    width: 24px;
+    height: 3.33px;
+  }
+
+  .spark-line-1.spark-simple-line {
+    top: 18px;
+  }
+
+  .spark-line-2.spark-simple-line {
+    top: 28px;
+  }
+
+  .spark-line-3.spark-simple-line {
+    background-color: var(--color-4);
+    width: 12.75px;
+    height: 3.33px;
+    margin-left: 0;
+    left: 18px;
+    top: 38px;
+  }
+
+  .spark-nav-link,
+  .my-nav {
+    text-align: left;
+    margin-left: 0;
+    margin-bottom: 1rem;
+    width: 100%;
+  }
+
+  .spark-nav-link.spark-button {
+    text-align: center;
+    margin-bottom: 0;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .mega-dropdown {
+    width: 100%;
+    position: relative;
+  }
+
+  .spark-mega-dropdown-list,
+  .mega-dropdown__list {
+    position: relative;
+    inset: 0;
+    width: 100%;
+    box-shadow: none;
+  }
+
+  .spark-mega-dropdown-list.w--open,
+  .mega-dropdown.is-open .mega-dropdown__list {
+    z-index: 10;
+    top: 0;
+    box-shadow: none;
+  }
+
+  .div-block-12 {
+    position: relative;
+    width: 100%;
+    padding-bottom: 20px;
+  }
+
+  .nav_dropdown-list {
+    grid-column-gap: 32px;
+    grid-template-columns: repeat(2, 1fr);
+    padding-left: 16px;
+    padding-right: 16px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .nav__dropdown-item,
+  .nav__dropdown-item-see-all {
+    width: 100%;
+    min-width: 10%;
+  }
+
+  .spark-card-image {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .container {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .spark-nav-link {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .spark-nav-link.spark-with-mega-dropdown {
+    justify-content: space-between;
+  }
+
+  .spark-square-menu-inner {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .website-header,
+  .site-nav {
+    border: 1px solid #00000014;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .nav_dropdown-list {
+    grid-template-columns: 1fr;
+    height: 500px;
+    padding: 16px;
+    overflow: auto;
+  }
+
+  .nav__dropdown-item,
+  .nav__dropdown-item-see-all {
+    width: 100%;
+    min-width: 25%;
+  }
+
+  .spark-nav-with-mega-dropdowns {
+    margin-top: 0;
+  }
+
+  .image-17 {
+    height: 40px;
+  }
+
+  .div-block-12 {
+    padding-bottom: 20px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .spark-nav-link {
+    margin-bottom: .5rem;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .spark-nav-link.spark-with-mega-dropdown {
+    justify-content: space-between;
+    margin-bottom: .5rem;
+  }
+
+  .spark-simple-menu-button {
+    padding-left: 0;
+  }
+
+  .spark-square-menu-inner {
+    background-color: var(--spark-library--white);
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .nav_dropdown-list {
+    border-radius: 0;
+  }
+
+  .nav__dropdown-item,
+  .nav__dropdown-item-see-all {
+    width: 100%;
+    min-width: 20%;
+    height: 260px;
+  }
+
+  .spark-nav-with-mega-dropdowns {
+    border-radius: 0;
+    margin-top: 0;
+    padding: 1rem .5rem;
+  }
+
+  .navbar__dropdown-heading {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+/* Typography */
+.h1-hero {
+  color: var(--color-6);
+  text-align: center;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+  margin-top: 10px;
+  font-family: Jost, Impact, sans-serif;
+}
+
+.h2-main {
+  font-family: Jost, Impact, sans-serif;
+  font-weight: 400;
+  line-height: 120%;
+  font-size: 3.25rem;
+  color: #302f2e;
+}
+
+
+.h2-main--uppercase {
+  text-transform: uppercase;
+}
+
+.h2-main--white {
+  color: var(--color-6);
+}
+
+.h3-heading--white {
+  color: var(--color-6);
+  font-weight: 400;
+  line-height: 120%;
+}
+
+.h3-heading--center {
+  text-align: center;
+}
+
+.paragraph {
+  font-family: Jost, Impact, sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 150%;
+  text-align: left;
+}
+
+.paragraph--right {
+  text-align: right;
+  max-width: 384px;
+}
+
+.paragraph--center {
+  text-align: center;
+}
+
+.paragraph--white {
+  color: var(--color-6);
+}
+
+/* Components */
+.btn {
+  display: inline-block;
+  padding: 15px 32px;
+  background-color: var(--color-6);
+  color: #000;
+  font-family: Jost, Impact, sans-serif;
+  font-weight: 300;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0;
+  line-height: inherit;
+  transition: all .35s;
+}
+
+.btn--outline {
+  background-color: transparent;
+  color: var(--combine-library--grey-800);
+}
+
+.btn--outline:hover {
+  background-color: var(--color-6);
+}
+
+/* Header navigation */
+.site-nav,
+.website-header {
+  background-color: var(--spark-library--white);
+  width: 100%;
+  padding-left: 64px;
+  padding-right: 64px;
+  font-family: Jost, Impact, sans-serif;
+  font-weight: 400;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+}
+
+.spark-square-menu-inner {
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  display: flex;
+  gap: 16px;
+}
+
+.site-nav__brand,
+.spark-brand-logo {
+  display: inline-flex;
+  align-items: center;
+  padding-left: 0;
+  text-decoration: none;
+  z-index: 2;
+}
+
+.site-nav__menu,
+.spark-nav-with-mega-dropdowns {
+  align-items: center;
+  display: flex;
+  font-size: 14px;
+  position: relative;
+  gap: 8px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.site-nav__link {
+  display: inline-flex;
+  align-items: center;
+}
+
+.spark-nav-link,
+.my-nav {
+  color: var(--spark-library--black);
+  text-align: center;
+  border-bottom: 1px solid transparent;
+  margin-left: 8px;
+  padding: 16px 24px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color .15s ease, color .15s ease, opacity .15s ease;
+}
+
+.spark-nav-link:hover,
+.my-nav:hover {
+  border-bottom-color: var(--blue);
+  background-color: var(--color-6);
+  opacity: 1;
+  border-radius: 0;
+}
+
+.spark-nav-link.spark-button {
+  color: var(--blue);
+  background-color: transparent;
+  border-radius: 999px;
+  margin-right: 0;
+  padding: 15px 32px;
+  font-size: 1rem;
+  transition: background-color .15s ease, opacity .15s ease;
+  /* Добавлено для соответствия index.html */
+  border: 0;
+  font-weight: 400;
+  line-height: 1em;
+  text-align: center;
+}
+
+.spark-nav-link.spark-button:hover {
+  color: var(--black);
+  opacity: 1;
+}
+
+.spark-nav-link.spark-with-mega-dropdown {
+  grid-column-gap: 16px;
+  padding: 15px 32px;
+  font-weight: 400;
+  text-decoration: none;
+  transition: background-color .15s ease, color .15s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.spark-button {
+  border: 1px solid var(--spark-library--foreground-interactive);
+  background-color: var(--spark-library--foreground-interactive);
+  color: var(--spark-library--white);
+  border-radius: 8px;
+  flex: none;
+  padding: 16px;
+  font-size: .9375rem;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  transition: border-color .15s ease, background-color .15s ease, opacity .15s ease;
+}
+
+.spark-button:hover {
+  border-color: var(--spark-library--foreground-interactive-hover);
+  background-color: var(--spark-library--foreground-interactive-hover);
+  opacity: 1;
+}
+
+.spark-icon {
+  width: 12px;
+  display: inline-block;
+}
+
+.text-block-12 {
+  font-size: 14px;
+  transition: opacity .2s ease;
+}
+
+.mega-dropdown {
+  display: inline-block;
+  position: relative;
+  text-align: left;
+  z-index: 900;
+}
+
+.mega-dropdown__toggle {
+  cursor: pointer;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mega-dropdown__list {
+  background-color: var(--spark-library--white);
+  width: 100%;
+  height: auto;
+  position: fixed;
+  inset: 80px 0% auto;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .2s ease;
+  box-shadow: 0 1px 5px #0003;
+}
+
+.mega-dropdown.is-open .mega-dropdown__list {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.div-block-12 {
+  background-color: #fff;
+  flex-flow: column;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100vw;
+  padding-bottom: 40px;
+  transition: all .35s ease;
+  display: flex;
+  position: absolute;
+  inset: 0 0 auto;
+  box-shadow: 0 1px 5px #0003;
+}
+
+.nav_dropdown-list {
+  grid-column-gap: 32px;
+  grid-row-gap: 16px;
+  background-color: var(--spark-library--white);
+  grid-template-rows: auto;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-columns: 1fr;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  padding: 32px;
+  display: grid;
+}
+
+.nav__dropdown-item,
+.nav__dropdown-item-see-all {
+  grid-column-gap: 16px;
+  grid-row-gap: 0;
+  color: var(--spark-library--black);
+  flex-direction: column;
+  flex: 0 0 auto;
+  width: 340px;
+  min-width: 30%;
+  max-width: 100%;
+  text-decoration: none;
+  display: flex;
+  position: relative;
+}
+
+.nav__dropdown-item-see-all {
+  text-decoration: underline;
+}
+
+.div-block-17 {
+  -webkit-text-fill-color: inherit;
+  background-color: #fafafa;
+  background-image: url('../images/logo-blurred-nav-2.svg');
+  background-position: 50%;
+  background-size: cover;
+  background-clip: border-box;
+  flex-flow: column;
+  justify-content: center;
+  height: 190px;
+  padding: 20px 40px;
+  display: flex;
+  position: relative;
+}
+
+.div-block-18 {
+  position: relative;
+  overflow: clip;
+}
+
+.div-block-19 {
+  opacity: 0;
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px);
+  background-image: url('../images/logo-blurred-nav.svg');
+  background-position: 50%;
+  background-size: cover;
+  position: absolute;
+  inset: 0;
+}
+
+.nav__dropdown-image-for-hover {
+  opacity: 0;
+  background-image: url('../images/logo-blurred-nav-3.svg');
+  background-position: 50%;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+.spark-card-image {
+  object-fit: cover;
+  width: 100%;
+  display: block;
+}
+
+.navbar__dropdown-heading {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 1.215rem;
+  font-weight: 400;
+}
+
+.navbar__dropdown-heading__link {
+  z-index: 2;
+  font-size: 1.215rem;
+  font-weight: 400;
+  text-decoration: none;
+  position: relative;
+}
+
+.navbar__dropdown-text,
+.paragraph-10,
+.paragraph-11 {
+  font-weight: 300;
+}
+
+.site-nav__button,
+.spark-simple-menu-button {
+  background-color: #fff;
+  width: 60px;
+  height: 60px;
+  padding: 0 0 0 18px;
+  overflow: hidden;
+  border: 0;
+  display: none;
+  position: relative;
+  cursor: pointer;
+}
+
+.spark-simple-menu-button.w--open,
+.site-nav__button.is-open {
+  background-color: var(--spark-library--background--interactive);
+  border-radius: 8px;
+}
+
+.spark-line-1,
+.spark-line-2,
+.spark-line-3 {
+  background-color: var(--spark-library--black);
+  width: 35px;
+  height: 2px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.spark-line-1 {
+  top: 10px;
+  z-index: 2;
+}
+
+.spark-line-2 {
+  top: 20px;
+  z-index: 1;
+}
+
+.spark-line-3 {
+  top: 30px;
+  z-index: 2;
+}
+
+.spark-line-1.spark-simple-line,
+.spark-line-2.spark-simple-line,
+.spark-line-3.spark-simple-line {
+  background-color: var(--spark-library--foreground-interactive);
+  border-radius: 3px;
+  height: 3.3px;
+}
+
+.spark-line-1.spark-simple-line,
+.spark-line-2.spark-simple-line {
+  width: 24px;
+}
+
+.spark-line-1.spark-simple-line {
+  top: 18px;
+}
+
+.spark-line-2.spark-simple-line {
+  top: 28px;
+}
+
+.spark-line-3.spark-simple-line {
+  width: 12.75px;
+  top: 38px;
+  margin-left: 18px;
+}
+
+/* Стили для hero-секции, чтобы соответствовать index.html */
+
+/*
+ * 1. Позиционируем видео как фон.
+ * Это правило заставит контейнер с видео растянуться на всю секцию
+ * и уйти на задний план, не влияя на остальной контент.
+*/
+.section--hero .background-video {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1; /* Помещает видео за полупрозрачным фоном секции */
+}
+
+/*
+ * Контейнер внутри hero-секции должен быть flex-контейнером,
+ * чтобы его дочерние элементы (.hero-text__div) были отцентрированы.
+*/
+.section--hero .container {
+  display: flex;
+  justify-content: center;
+}
+
+/*
+ * 2. Стилизуем текстовый блок, чтобы выровнять и расположить
+ * по центру заголовок, текст и кнопку.
+*/
+.hero-text__div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 1000px;
+  width: 100%;
+}
+
+/*
+ * Стили для изображения в hero-секции.
+ * width: 100% заставляет изображение занимать всю ширину родительского блока,
+ * а height: auto сохраняет его пропорции, обеспечивая масштабирование.
+*/
+.image-8 {
+  width: 100%;
+  height: auto;
+}
+
+/* 3. Ограничиваем ширину параграфа для лучшей читаемости. */
+.hero-text__div > .paragraph {
+  max-width: 500px;
+  /* Приводим шрифт и интервал к эталонному виду */
+  font-size: 14px;
+  line-height: 24px;
+}
+
+/*
+ * Кастомная анимация для hero-секции.
+ * Заменяет стандартную анимацию Webflow, которая не срабатывала.
+*/
+
+/* Начальное состояние (добавляется инлайново в HTML) */
+.section--hero .container[data-w-id],
+.section--hero .image-8[data-w-id] {
+  opacity: 0;
+  filter: blur(10px);
+  transition: opacity 1s ease, filter 1s ease;
+}
+
+/* Конечное состояние (добавляется через JS класс .is-visible) */
+.section--hero .container.is-visible,
+.section--hero .container.is-visible .image-8 {
+  opacity: 1;
+  filter: blur(0px);
+}
+
+/* Добавляем задержку для внутреннего изображения для красивого эффекта */
+.section--hero .container.is-visible .image-8 {
+  transition-delay: 0.2s;
+}
+
+/*
+ * 4. Стили для фонового видео из webflow.css
+ * Обеспечивают правильное растягивание и позиционирование видео.
+*/
+.w-background-video > video {
+  background-size: cover;
+  background-position: 50% 50%;
+  position: absolute;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  inset: -100%;
+  object-fit: cover;
+  z-index: -100;
+}
+
+/*
+ * Стили для второй секции, чтобы соответствовать index.html
+*/
+
+.section--white .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 75px;
+}
+
+.section-2-text-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  width: 100%;
+}
+
+.heading-2-div {
+  width: 588px;
+}
+
+.section-2-feautures-wrap {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  width: 100%;
+}
+
+.section-2-feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 32px;
+  gap: 12px;
+}
+
+.section-2-feature-item h3 {
+  font-size: 64px;
+  font-weight: 400;
+  margin: 0;
+  font-family: Jost, Impact, sans-serif;
+  color: #000;
+}
+
+/*
+ * Устанавливаем правильный цвет для текста во второй секции,
+ * чтобы он соответствовал эталону (#302f2e), а не был чисто черным.
+*/
+.section-2-text-wrap .h2-main,
+.section-2-text-wrap .paragraph,
+.section-2-feature-item .paragraph {
+    color: var(--color-4);
+}
+
+/*
+ * Устанавливаем ширину 100% для изображения во второй секции,
+ * чтобы она соответствовала ширине текстовых блоков.
+*/
+.section--white .container > img {
+  width: 100%;
+  height: auto;
+}
+
+/*
+ * Адаптивные стили для второй секции
+*/
+
+@media screen and (max-width: 767px) {
+  .section--white .container {
+    gap: 50px;
+  }
+
+  .section-2-text-wrap {
+    flex-direction: column;
+    align-items: center;
+    text-align: center; /* Центрируем заголовок и параграф */
+    gap: 20px;
+  }
+
+  .heading-2-div {
+    width: 100%;
+    max-width: 548px;
+  }
+
+  .paragraph--right {
+    text-align: center; /* Переопределяем выравнивание для мобильных */
+    max-width: 548px;
+  }
+
+  .section-2-feautures-wrap {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .section--white .container {
+    gap: 40px;
+  }
+}
+
+/*
+ * Стили для третьей секции (Услуги), чтобы соответствовать index.html
+*/
+
+/* Задаем фон и отступы для секции. Используем селектор смежного элемента,
+   чтобы применить стили только к третьей секции, не меняя HTML. */
+.section--white + .section {
+    background-color: var(--white);
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+/* Контейнер в третьей секции должен быть flex-колонкой с отступами между блоками. */
+.section--white + .section > .container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.services-list-container {
+    margin-bottom: 20px;
+}
+
+/* Сетка для списка услуг */
+.div-block-28 {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: space-between;
+    row-gap: 20px; /* Отступ между строками */
+}
+
+/* Элемент списка услуг */
+.service-item {
+    display: flex;
+    position: relative;
+    align-items: center;
+    width: 49%;
+    height: 56px;
+    background-color: #f5f6f7; /* var(--color-6) */
+    color: var(--color-4);
+}
+
+/* Ссылка внутри элемента */
+.service-item-div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 12px;
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Класс для текста услуги из index.html, необходим для работы анимации */
+.services-text {
+    color: var(--color-4);
+}
+
+/* Иконка слева */
+.service-item__icon-wrapper {
+    padding-right: 10px;
+}
+
+.image-27 {
+    width: 26px;
+    height: 26px;
+}
+
+/* Иконка, появляющаяся при наведении */
+.image-28 {
+    position: absolute;
+    height: 100%;
+    right: 2%;
+    top: 0;
+    bottom: 0;
+    left: auto;
+}
+
+/* Нижний блок с картинками и текстом */
+.services-about-block {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.services-about-block__image-large {
+    width: 49%;
+    object-fit: cover;
+}
+
+.services-about-block__content {
+    display: flex;
+    flex-direction: column;
+    width: 49%;
+    gap: 20px;
+}
+
+.services-about-block__image-small {
+    width: 100%;
+    object-fit: cover;
+}
+
+/* Убедимся, что текст в блоке имеет правильный цвет */
+.services-about-block__content .paragraph {
+    color: var(--color-4);
+}
+
+.section-4-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  position: relative;
+  grid-column-gap: 3rem;
+  grid-row-gap: 3rem;
+}
+
+/* Стили для блока с текстом, чтобы он был "липким" при скролле */
+.section-4-div-sticky {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 25px;
+  width: 384px;
+  padding-top: 140px;
+  position: sticky;
+  top: 1.25rem;
+}
+
+/* Корректировка типографики внутри блока .section-4-div-sticky */
+.section-4-div-sticky .h2-main {
+  font-weight: 500;
+  /* В оригинале line-height: 24px. Это значение сохранено для идентичности,
+     хотя оно меньше размера шрифта. */
+  line-height: 24px;
+}
+
+.section-4-div-sticky .paragraph {
+  color: var(--combine-library--grey-600);
+  letter-spacing: -0.28px;
+}
+
+/* Стили для содержимого кнопки "Связаться с менеджером" */
+.combine-button-content {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.combine-chevron-right_icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Стили для блока с изображениями */
+.section-4-img-list {
+  display: flex;
+  flex-direction: column;
+  grid-column-gap: 50px;
+  grid-row-gap: 50px;
+  width: 690px;
+}
+
+.section-4-img-item,
+.section-4-img-item-2,
+.section-4-img-item-3 {
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  height: 690px;
+  background-position: 50%;
+  background-size: cover;
+  text-align: justify;
+}
+
+.section-4-img-item,
+.section-4-img-item-2 {
+  background-color: var(--combine-library--white);
+}
+
+.section-4-img-item { background-image: url('../images/section-4-img-1_1.avif'); display: none; }
+.section-4-img-item-2 { background-image: url('../images/main-page2_1.avif'); display: none; }
+.section-4-img-item-3 { background-image: url('../images/yacht-profile_1.avif'); display: flex; }
+
+/*
+ * Адаптивные стили для третьей секции (Услуги)
+*/
+
+/* Планшеты и меньше */
+@media screen and (max-width: 991px) {
+  .service-item {
+    width: 100%;
+  }
+}
+
+/* Мобильные (альбомная ориентация) и меньше */
+@media screen and (max-width: 767px) {
+  /* Уменьшаем отступы секции на мобильных */
+  .section--white + .section {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+
+  /* Перестраиваем нижний блок в колонку */
+  .services-about-block {
+    flex-direction: column;
+  }
+
+  .services-about-block__image-large,
+  .services-about-block__content {
+    width: 100%;
+  }
+
+  .services-about-block__image-large {
+    height: 300px;
+  }
+
+  /* Уменьшаем шрифт для параграфов в этой секции */
+  .service-item .paragraph,
+  .services-about-block__content .paragraph {
+    font-size: 0.875rem;
+  }
+}
+
+/* Мобильные (портретная ориентация) и меньше */
+@media screen and (max-width: 479px) {
+  /* Перестраиваем список услуг в колонку */
+  .div-block-28 {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* В оригинале на этом разрешении у карточек белый фон */
+  .service-item,
+  .service-item-div {
+    background-color: #fff;
+  }
+}
+
+/*
+ * Стили для hover-эффекта на карточках услуг.
+ * Заменяют стандартную анимацию Webflow, которая работала некорректно
+ * из-за одинаковых data-w-id.
+*/
+.service-item {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.service-item:hover {
+  background-color: var(--color-4, #302f2e); /* Цвет фона при наведении */
+  color: var(--white, #fff); /* Цвет текста при наведении */
+}
+
+/* Текст внутри карточки также должен менять цвет */
+.service-item:hover .paragraph {
+  color: var(--white, #fff);
+}
+
+.service-item:hover .image-27 {
+  filter: brightness(0) invert(1); /* Делаем иконку белой */
+}
+
+/* Анимация для фонового логотипа .image-28 внутри карточки */
+.image-28 {
+  /* Начальное состояние: невидимый, увеличенный и размытый */
+  opacity: 0;
+  transform: scale(1.2);
+  filter: blur(4px);
+  transition: opacity 0.4s ease, transform 0.4s ease, filter 0.4s ease;
+}
+
+.service-item:hover .image-28 {
+  /* Конечное состояние при наведении: видимый и в фокусе */
+  opacity: 1 !important;
+  transform: scale(1) !important;
+  filter: blur(0) !important;
+}
+
+/*
+ * Стили для кнопки формы "Заказать консультацию", чтобы она соответствовала index.html
+ * (компенсация отсутствия класса .w-button)
+*/
+.submit-button-2.btn-submit {
+  display: block;
+  width: 100%;
+  height: 48px;
+  padding: 9px 15px;
+  background-color: var(--color-6);
+  color: #000;
+  border: 0;
+  border-radius: 0;
+  font-family: Jost, Impact, sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/*
+ * Адаптивные стили для секции "Рядом 24/7"
+*/
+
+@media screen and (max-width: 991px) {
+  .section--light-gray {
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+
+  .section-4-img-list {
+    width: 300px;
+  }
+
+  .section-4-img-item,
+  .section-4-img-item-2,
+  .section-4-img-item-3 {
+    width: 300px;
+    height: 300px;
+  }
+
+  .section-4-div-sticky {
+    width: 250px;
+    padding-top: 100px;
+  }
+
+  /* Убираем ограничение по ширине для контейнера, чтобы flex-элементы
+     корректно распределялись по всей ширине (space-between) */
+  .section--light-gray .container {
+    max-width: none;
+  }
+  /* Добавлено: Адаптивный размер шрифта для заголовка на планшетах */
+  .section-4-div-sticky .h2-main {
+    font-size: 3rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .section--light-gray {
+    align-items: center;
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+
+  .section-4-div {
+    flex-direction: column;
+  }
+
+  .section-4-div-sticky {
+    width: 100%;
+    padding-top: 40px;
+    position: static;
+  }
+
+  .section-4-img-list {
+    width: 100%;
+  }
+
+  .section-4-img-item-3 {
+    height: 400px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .section-4-div-sticky {
+    padding-top: 0;
+    text-align: justify;
+  }
+
+  .section-4-img-list {
+    grid-column-gap: 15px;
+    grid-row-gap: 15px;
+  }
+
+  .section-4-img-item,
+  .section-4-img-item-2,
+  .section-4-img-item-3 {
+    height: 270px;
+  }
+
+  .section-4-div-sticky .h2-main {
+    text-align: center;
+  }
+
+  .section-4-div-sticky .btn--outline {
+    width: 100%;
+    background-color: #30302d;
+    color: var(--color-6);
+  }
+
+  .section-4-div-sticky .btn--outline:hover {
+    background-color: var(--black);
+  }
+}
+
+/*
+ * Адаптивные стили для секции "Рядом 24/7"
+*/
+
+@media screen and (max-width: 991px) {
+  .section--light-gray {
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+
+  .section-4-img-list {
+    width: 45%;
+  }
+
+  .section-4-img-item,
+  .section-4-img-item-2,
+  .section-4-img-item-3 {
+    width: 100%;
+    height: 550px;
+  }
+
+  .section-4-div-sticky {
+    width: 420px;
+    padding-top: 100px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .section--light-gray {
+    align-items: center;
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+
+  .section-4-div {
+    flex-direction: column;
+  }
+
+  .section-4-div-sticky {
+    width: 100%;
+    padding-top: 40px;
+    position: static;
+  }
+
+  .section-4-img-list {
+    width: 100%;
+    gap: 50px;
+  }
+
+  .section-4-img-item-3 {
+    height: 400px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .section-4-div-sticky {
+    padding-top: 0;
+    text-align: justify;
+  }
+
+  .section-4-img-list {
+    gap: 15px;
+  }
+
+  .section-4-img-item,
+  .section-4-img-item-2,
+  .section-4-img-item-3 {
+    height: 270px;
+  }
+
+  .section-4-div-sticky .h2-main {
+    text-align: center;
+  }
+
+  .section-4-div-sticky .btn--outline {
+    width: 100%;
+    background-color: #30302d;
+    color: var(--color-6);
+  }
+
+  .section-4-div-sticky .btn--outline:hover {
+    background-color: var(--black);
+  }
+}
+
+/* Стили для секции "Совершенство в деталях" */
+.section-5-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 0px;
+  padding-top: 200px;
+  padding-bottom: 100px;
+}
+
+.section-5-text-wpap {
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+  width: 486px;
+}
+
+.section-5-text-wpap .h2-main {
+  width: 100%;
+}
+
+.section-5-text-wpap .paragraph {
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.image-15 {
+  width: 600px;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 991px) {
+  .section-5-div {
+    flex-flow: column;
+    gap: 38px;
+  }
+  .section-5-text-wpap {
+    flex-direction: row;
+    width: 100%;
+    gap: 53px;
+  }
+  .image-15 {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .section-5-div {
+    gap: 35px;
+  }
+  .section-5-text-wpap {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .section-5-text-wpap .paragraph {
+    text-align: justify;
+  }
+  .image-15 {
+    order: -1;
+  }
+}
+
+/* Стили для секции "Индивидуальные решения" */
+.section--black .container {
+
+}
+
+.section6__content-wrap {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: 75px;
+  width: 100%;
+  padding-bottom: 200px;
+  padding-top: 100px;
+}
+
+.section6__content-wrap .h2-main--white {
+  text-align: center;
+}
+
+.section-6-img {
+  width: 100%;
+  height: 450px;
+  object-fit: cover;
+}
+
+.section6__text-wrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 75px;
+}
+
+.section6__form {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 50px;
+  width: 100%;
+  padding: 50px;
+  background-color: #0d0d0d;
+}
+
+.section6__form__wrap-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 50px;
+  width: 100%;
+}
+
+.section6__form__wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 50px;
+  width: 500px;
+}
+
+.section6__form__div {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.section6__form__wrap .btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.button-text--black {
+  color: var(--black);
+  font-size: 14px;
+  letter-spacing: -0.32px;
+  line-height: 24px;
+  text-decoration: none;
+}
+
+.button-arrow--black {
+  width: 12px;
+}
+
+.section-6-img-form {
+  width: 500px;
+  height: 300px;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 991px) {
+  .section--black .container { padding-top: 40px; padding-bottom: 40px; }
+  .section6__content-wrap { gap: 50px; }
+  .section6__form { max-width: 728px; height: 420px; }
+  .section6__form__wrap-main { gap: 32px; height: 100%; overflow: clip; }
+  .section6__form__wrap { width: 280px; height: 100%; }
+  .section6__form__wrap .btn { width: 100%; }
+  .section-6-img-form { width: 300px; height: 100%; }
+}
+
+@media screen and (max-width: 767px) {
+  .section--black .container { padding-top: 50px; padding-bottom: 50px; }
+  .section6__content-wrap { gap: 25px; }
+  .section6__text-wrap { flex-direction: column; text-align: justify; gap: 25px; }
+  .section6__form { flex-direction: column; align-items: center; height: auto; padding: 25px; gap: 25px; }
+  .section6__form__wrap-main { flex-direction: column; width: 100%; }
+  .section6__form__wrap { width: 100%; align-items: center; gap: 25px; }
+  .section6__form__div { align-items: center; }
+  .section6__form__div .paragraph--white { text-align: center; }
+  .section-6-img { height: 300px; }
+  .section-6-img-form { width: 100%; height: 250px; }
+}
+
+/*
+ * Стили для градиентов в секции "Решения для всех этапов",
+ * перенесенные из инлайн-стилей.
+*/
+
+
+.section7_animated-wrap {
+  position: relative;
+  width: 45%;
+  overflow: clip;
+  height: 500px;
+}
+
+@media screen and (max-width: 767px) {
+  .section7_animated-wrap {
+    width: 100%;
+    height: 300px;
+  }
+  
+}
+
+.section7__div-bg-gradient--top {
+  z-index: 3;
+  background-image: linear-gradient(white, #fff0);
+  width: 100%;
+  height: 125px;
+  position: absolute;
+  inset: 0% 0% auto;
+}
+
+.section7__div-bg-gradient {
+  z-index: 3;
+  background-image: linear-gradient(0deg, white, #fff0);
+  width: 100%;
+  height: 125px;
+  position: absolute;
+  inset: auto 0% 0%;
+}
+
+/*
+ * Стили для анимированного текста, чтобы он соответствовал
+ * оригинальному дизайну и шрифту Jost.
+*/
+.text--black-animated {
+  font-family: Jost, sans-serif;
+  font-size: 14px;
+  letter-spacing: -0.48px;
+  line-height: 24px;
+  margin-bottom: 10px;
+}
+
+/* Стили для секции "Решения для всех этапов" */
+.section7__content-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 100px;
+  width: 100%;
+}
+
+/* Добавляем недостающее свойство для заголовка, чтобы он выглядел как в оригинале */
+.section7__content-wrap .h2-main {
+  letter-spacing: -1.2px;
+}
+
+/* На мобильных устройствах элементы должны располагаться друг под другом */
+@media screen and (max-width: 767px) {
+  .section7__content-wrap {
+    flex-direction: column;
+    align-items: center; /* Центрируем элементы в колонке */
+    gap: 40px; /* Добавляем отступ между блоками */
+  }
+}
+
+
+@media screen and (max-width: 479px) {
+  .section6__text-wrap { flex-direction: column; }
+  .section-6-img { height: 200px; }
+}
+
+/*
+ * Устанавливаем Jost как основной шрифт для всего сайта.
+ * Это правило применяется к body и элементам форм, которые не всегда наследуют шрифт.
+*/
+
+/* Обновленные и дополненные стили для секции с картой и формой */
+.section9__content-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  margin-top: 200px;
+  margin-bottom: 200px;
+  width: 100%;
+  gap: 20px ;
+}
+
+.section9__div {
+  background-color: #0d0d0d;
+  display: flex;
+}
+
+.section9__div__map {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  padding: 50px;
+}
+
+.section9__div__map__wrap {
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 25px;
+}
+
+.section9__div__map__wrap__adress {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 590px;
+}
+
+.section9__div__street-name {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section9__div__street-name .paragraph--white {
+  color: #fff;
+  line-height: 24px;
+}
+
+.link-block--wide {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 104px;
+  height: 32px;
+  text-decoration: none;
+  transition: all .35s;
+}
+
+.link-block--wide:hover {
+  padding-left: 10px;
+}
+
+.link-block--wide .text {
+  color: #f5f6f7;
+  font-size: 16px;
+  font-weight: 300;
+  text-decoration: none;
+}
+
+.section9__map {
+  width: 590px;
+  height: 264px;
+}
+
+.section9__form {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  background-color: #0d0d0d;
+  width: 486px;
+  height: 100%;
+  padding: 50px;
+}
+
+.section9__form__heading__div {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.form-block-div {
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.form-5 {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 100%;
+}
+
+.section9__form__input {
+  height: 48px;
+  background-color: #131313;
+  border: 1px solid #131313;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.section9__form__input::placeholder {
+  color: #9d9d9d;
+}
+
+.submit-button-2.w-button {
+  background-color: #f5f6f7;
+  color: #000;
+  height: 48px;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.submit__div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+}
+
+.checkbox-field {
+  display: flex;
+  gap: 5px;
+}
+
+.checkbox-label-2.w-form-label {
+  font-weight: 300;
+  color: #f5f5f7;
+  margin-bottom: 0;
+}
+
+/* Адаптивные стили */
+@media screen and (max-width: 991px) {
+  .section9__content-wrap {
+    flex-flow: column;
+    align-items: center;
+    gap: 46px;
+    margin-top: 60px;
+    margin-bottom: 60px;
+    width: 100%;
+  }
+
+  .section9__div__map {
+    width: 100%;
+  }
+
+  .section9__form {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .section9__content-wrap {
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+
+  .section9__div {
+    flex-flow: column;
+    width: 100%;
+  }
+
+  .section9__div__map {
+    padding: 25px;
+  }
+
+  .section9__div__map__wrap {
+    width: 100%;
+  }
+
+  .section9__div__map__wrap__adress {
+    flex-flow: row;
+    width: 100%;
+  }
+
+  .section9__map {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .section9__div__map__wrap__adress {
+    flex-flow: column;
+    align-items: flex-start;
+    gap: 30px;
+    width: 100%;
+  }
+
+  .section9__map,
+  .section9__div__map__wrap__adress {
+    width: 100%;
+  }
+
+  .section9__form {
+    padding: 25px;
+  }
+}
+
+/* Стили для футера, чтобы он соответствовал index.html */
+.footer__content-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  gap: 20px; /* Отступ между левым и правым блоками */
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.footer__div__left {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.subscribe-div {
+  display: flex;
+  flex-direction: column;
+  width: 384px;
+  height: 516px;
+  flex-shrink: 0;
+}
+
+.footer-div__img {
+  background-image: url('../images/footer-img.jpg');
+  background-position: 50%;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  padding: 20px;
+}
+
+.footer__menu-item h4 {
+  font-size: 14px;
+  letter-spacing: -0.28px;
+  font-weight: 300;
+  line-height: 24px;
+  margin: 0;
+}
+
+.form-8 {
+  display: flex;
+  align-items: baseline;
+  gap: 19px;
+  margin-top: 20px;
+}
+
+.submit-button-6.w-button {
+  background-color: var(--black);
+  color: #fff;
+  height: 48px;
+  font-weight: 400;
+  transition: all .35s;
+}
+
+.submit-button-6.w-button:hover {
+  background-color: var(--color-4);
+}
+
+/* Адаптивные стили для футера */
+@media screen and (max-width: 991px) {
+  .footer__content-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .subscribe-div {
+    width: 100%;
+    max-width: 700px;
+    height: 300px;
+    margin-top: 20px;
+  }
+  .footer__div__left {
+    width: 100%;
+  }
+  .footer__menu-list .grid {
+    width: 100%;
+    max-width: 700px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .footer__div__left {
+    order: 1;
+    gap: 63px;
+  }
+  .subscribe-div {
+    order: 0;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .footer__menu-list .grid {
+    grid-template-columns: 1fr;
+  }
+  .subscribe-div {
+    height: 500px;
+  }
+  .footer-div-consents {
+    flex-direction: column;
+  }
+  .form-8 {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+}
+
+/*
+================================================================================
+КОРРЕКЦИЯ ТИПОГРАФИКИ И ЦВЕТОВ (для соответствия index.html)
+================================================================================
+*/
+
+/* 1. Базовый цвет для параграфов, как в оригинале */
+.paragraph {
+  color: var(--color-4); /* #302f2e */
+}
+
+/* 2. Стили для белого текста */
+.paragraph--white {
+  color: var(--white);
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media screen and (max-width: 479px) {
+  .footer__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer-div-consents {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* 3. Коррекция стилей заголовков и текста в футере */
+.paragraph--footer-heading {
+  color: #f5f6f7;
+  font-size: 20px;
+  letter-spacing: -0.28px;
+  font-weight: 300;
+  line-height: 24px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.footer__menu-list__points .paragraph--white {
+  font-size: 14px;
+  line-height: 24px;
+  margin-bottom: 0; /* Убираем лишний отступ у параграфов в ссылках */
+}
+
+/* 4. Стили для ссылок в футере */
+.footer__menu-list__points .link-block-7 {
+  text-decoration: none;
+  color: var(--white);
+  transition: color 0.35s ease;
+}
+
+.footer__menu-list__points .link-block-7:hover {
+  color: var(--color-4);
+}
+
+.footer__menu-list__points .link-block-7 .paragraph--white {
+  color: inherit; /* Наследует цвет от родительской ссылки <a> */
+}
+
+/* Ссылка-телефон */
+.footer__menu-list__points .link {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 24px;
+  transition: none;
+}
+
+.footer__menu-list__points .link:hover {
+  text-decoration: underline;
+  color: var(--white);
+}
+
+/* 5. Стили для блока с копирайтом */
+.footer-div-consents .text-block-5 {
+  color: #b5b5b5;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 24px;
+  transition: color 0.35s ease;
+}
+
+.footer-div-consents .link-block-8 {
+  text-decoration: none;
+}
+
+.footer-div-consents .link-block-8:hover .text-block-5 {
+  color: var(--white);
+}
+
+/* Moved from inline <style> in HTML: hide messages by default */
+.form-success,
+.form-error {
+  display: none;
+}

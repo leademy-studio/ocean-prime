@@ -1,0 +1,110 @@
+services:
+  # Сервис Traefik (обратный прокси)
+  traefik:
+    image: traefik:v2.10
+    container_name: leademy_traefik
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080" # Для доступа к Dashboard Traefik
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik/dynamic:/etc/traefik/dynamic:ro
+      - ./traefik/certs:/etc/traefik/certs:ro
+      - ./traefik/acme.json:/etc/traefik/acme.json # Файл для хранения сертификатов Let's Encrypt
+    networks:
+      - leademy_network
+
+  # Сервис PHP-FPM
+  app:
+    # Явно указываем имя образа для лучшего управления
+    image: leademy-website/app:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: leademy_app
+    restart: unless-stopped
+    env_file:
+      - ./october/.env
+    volumes:
+      # Монтируем код проекта в корень веб-директории контейнера
+      - ./october:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - leademy_network
+
+  # Сервис Nginx (веб-сервер)
+  nginx:
+    image: nginx:alpine
+    container_name: leademy_nginx
+    restart: unless-stopped
+    volumes:
+      # Монтируем тот же код для раздачи статики
+      - ./october:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - leademy_network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.leademy-app.rule=Host(`leademy.studio`)"
+      - "traefik.http.routers.leademy-app.entrypoints=websecure"
+      - "traefik.http.routers.leademy-app.tls=true"
+      - "traefik.http.routers.leademy-app.tls.certresolver=letsencrypt" # Использовать Let's Encrypt
+      - "traefik.http.routers.leademy-app.service=leademy-app"
+      - "traefik.http.services.leademy-app.loadbalancer.server.port=80"
+      - "traefik.docker.network=leademy_network"
+      # --- РЕДИРЕКТ С WWW НА КАНОНИЧЕСКИЙ ДОМЕН ---
+      - "traefik.http.middlewares.redirect-to-root.redirectregex.regex=^(https?)://www\\.leademy\\.studio/(.*)"
+      - "traefik.http.middlewares.redirect-to-root.redirectregex.replacement=$${1}://leademy.studio/$${2}"
+      - "traefik.http.middlewares.redirect-to-root.redirectregex.permanent=true"
+      - "traefik.http.routers.leademy-www.rule=Host(`www.leademy.studio`)"
+      - "traefik.http.routers.leademy-www.entrypoints=websecure"
+      - "traefik.http.routers.leademy-www.tls=true"
+      - "traefik.http.routers.leademy-www.tls.certresolver=letsencrypt" # Использовать Let's Encrypt для www
+      - "traefik.http.routers.leademy-www.middlewares=redirect-to-root"
+      - "traefik.http.routers.leademy-www.service=leademy-app"
+      # --- НАСТРОЙКА MIDDLEWARE ДЛЯ HTTPS И БЕЗОПАСНОСТИ ---
+      # 1. Определяем middleware, которое будет добавлять заголовки.
+      # Принудительно добавляем заголовок, сообщающий, что исходный протокол - HTTPS.
+      - "traefik.http.middlewares.leademy-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
+      # Добавляем заголовки безопасности (HSTS).
+      - "traefik.http.middlewares.leademy-headers.headers.stsSeconds=31536000"
+      - "traefik.http.middlewares.leademy-headers.headers.stsPreload=true"
+      # 2. Применяем созданный middleware к нашему роутеру.
+      - "traefik.http.routers.leademy-app.middlewares=leademy-headers"
+
+  # Сервис базы данных MySQL
+  db:
+    image: mysql:8.0
+    container_name: leademy_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - leademy_db_data:/var/lib/mysql
+    networks:
+      - leademy_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
+      start_period: 40s
+
+networks:
+  leademy_network:
+    name: leademy_network
+    driver: bridge
+
+volumes:
+  leademy_db_data:
+    driver: local

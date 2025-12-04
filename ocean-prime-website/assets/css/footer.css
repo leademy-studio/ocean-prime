@@ -1,0 +1,213 @@
+/* Стили для футера */
+footer.section--black {
+  background-color: var(--black);
+  color: var(--color-6);
+}
+
+.footer__content-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  gap: 20px;
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.footer__div__left {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.subscribe-div {
+  display: flex;
+  flex-direction: column;
+  width: 384px;
+  height: 516px;
+  flex-shrink: 0;
+}
+
+.footer-div__img {
+  background-image: url('../images/footer-img.jpg');
+  background-position: 50%;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  padding: 20px;
+}
+
+.footer-div__img .form-8 {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.footer-div__img .submit-button-6.btn-submit,
+.footer-div__img .submit-button-6.w-button {
+  background-color: var(--black);
+  color: #fff;
+  height: 48px;
+  font-weight: 400;
+  transition: all .35s;
+  padding: 9px 15px;
+  border: 0;
+  line-height: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.footer-div__img .submit-button-6.btn-submit:hover,
+.footer-div__img .submit-button-6.w-button:hover {
+  background-color: var(--color-4);
+}
+
+.footer-div__img .form-input,
+.footer-div__img .text-field-4 {
+    height: 48px;
+    background-color: #131313;
+    border: 1px solid #131313;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 8px 12px;
+}
+
+.footer-div__img .form-input::placeholder,
+.footer-div__img .text-field-4::placeholder {
+    color: #9d9d9d;
+}
+
+.footer-div__img .form-8 .form-input {
+  width: 50%;
+}
+
+.footer-div__img .form-8 .submit-button-6 {
+  width: 45%;
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.footer-div-consents {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.paragraph--footer-heading {
+  color: #f5f6f7;
+  font-size: 20px;
+  letter-spacing: -0.28px;
+  font-weight: 300;
+  line-height: 24px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.footer__menu-list__points .paragraph--white {
+  font-size: 14px;
+  line-height: 24px;
+  margin-bottom: 0;
+}
+
+.footer__menu-list__points .link-block-7 {
+  text-decoration: none;
+  color: var(--white);
+  transition: color 0.35s ease;
+}
+
+.footer__menu-list__points .link-block-7:hover {
+  color: var(--color-4);
+}
+
+.footer__menu-list__points .link-block-7 .paragraph--white {
+  color: inherit;
+}
+
+.footer__menu-list__points .link {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 24px;
+  transition: none;
+}
+
+.footer__menu-list__points .link:hover {
+  text-decoration: underline;
+  color: var(--white);
+}
+
+.footer-div-consents .text-block-5 {
+  color: #b5b5b5;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 24px;
+  transition: color 0.35s ease;
+}
+
+.footer-div-consents .link-block-8 {
+  text-decoration: none;
+}
+
+.footer-div-consents .link-block-8:hover .text-block-5 {
+  color: var(--white);
+}
+
+/* Адаптивные стили для футера */
+@media screen and (max-width: 991px) {
+  .footer__content-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .subscribe-div {
+    width: 100%;
+    max-width: 700px;
+    height: 300px;
+    margin-top: 20px;
+  }
+  .footer__div__left {
+    width: 100%;
+  }
+  .footer__menu-list .grid,
+  .footer__grid {
+    width: 100%;
+    max-width: 700px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .footer__div__left {
+    order: 1;
+    gap: 63px;
+  }
+  .subscribe-div {
+    order: 0;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .footer__grid {
+    grid-template-columns: 1fr;
+  }
+  .subscribe-div {
+    height: 500px;
+  }
+  .footer-div-consents {
+    flex-direction: column;
+  }
+  .footer-div__img .form-8 {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+}
