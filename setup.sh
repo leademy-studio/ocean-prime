@@ -19,7 +19,7 @@
 
 # --- НАСТРОЙКИ ---
 
-GIT_REPO_URL="https://github.com/your-repo/ocean-prime.git" # Укажите реальный URL
+GIT_REPO_URL="https://github.com/leademy-studio/ocean-prime.git" # Укажите реальный URL
 
 # Директория для установки проекта на сервере
 PROJECT_DIR="/var/www/ocean-prime"
@@ -72,7 +72,7 @@ else
     echo "✅  Репозиторий успешно склонирован в $PROJECT_DIR."
 fi
 
-# Переходим в директорию проекта
+# Переходим в директорию проекта ы
 cd "$PROJECT_DIR"
 
 # --- 4. Создание файлов конфигурации ---
