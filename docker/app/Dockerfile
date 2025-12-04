@@ -20,7 +20,7 @@ RUN sed -i 's/user www-data;/user root;/' /etc/nginx/nginx.conf
 
 # --- Настройка PHP ---
 # Устанавливаем расширения, необходимые для October CMS / Laravel
-RUN docker-php-ext-install pdo_mysql zip gd fileinfo
+RUN docker-php-ext-install pdo_mysql zip gd fileinfo curl mbstring bcmath
 
 # --- Установка Composer ---
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
