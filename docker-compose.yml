@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   # Service Traefik (reverse proxy)
   traefik:
@@ -23,6 +25,8 @@ services:
       context: ./docker/app
       dockerfile: Dockerfile
     image: ocean-prime-app:latest
+    # Add env_file to explicitly load environment variables
+    env_file: .env
     container_name: ocean_prime_app
     restart: unless-stopped
     working_dir: /var/www/html
@@ -33,18 +37,16 @@ services:
     networks:
       - ocean_prime_network
     depends_on:
-      - db
-    environment:
-      DB_HOST: db
-      DB_DATABASE: october
-      DB_USERNAME: october
-      DB_PASSWORD: october
-    entrypoint: ["bash"]
+      db:
+        condition: service_started
+    # Change entrypoint to keep the container running
+    entrypoint: ["/entrypoint.sh"]
 
   # MySQL for October CMS
   db:
     image: mysql:8.0
     container_name: ocean_prime_db
+    env_file: .env
     restart: unless-stopped
     platform: linux/amd64
     environment:
