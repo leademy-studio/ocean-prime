@@ -37,6 +37,38 @@ apt-get update
 apt-get upgrade -y
 apt-get install -y git curl
 
+# --- 2. Создание пользователя для деплоя ---
+echo "⚙️  [2/8] Создание пользователя 'deployer' и настройка SSH-доступа..."
+
+# Ваш публичный ключ, который будет добавлен на сервер
+DEPLOY_PUBLIC_KEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO5j3U8F/5OL0mYc76M/NUfE7nTecLJYlhoI0tb1Mivn ravilsakirov@MacBook-Pro.local"
+
+# Создаем пользователя, если он еще не существует
+if id "deployer" &>/dev/null; then
+    echo "ℹ️  Пользователь 'deployer' уже существует."
+else
+    # Создаем пользователя без пароля, так как вход будет по ключу
+    adduser --disabled-password --gecos "" deployer
+    echo "✅  Пользователь 'deployer' создан."
+fi
+
+# Создаем директорию .ssh и файл authorized_keys
+mkdir -p /home/deployer/.ssh
+touch /home/deployer/.ssh/authorized_keys
+
+# Добавляем публичный ключ в authorized_keys, если его там еще нет
+if grep -qF "$DEPLOY_PUBLIC_KEY" /home/deployer/.ssh/authorized_keys; then
+    echo "ℹ️  SSH ключ уже добавлен для пользователя 'deployer'."
+else
+    echo "$DEPLOY_PUBLIC_KEY" >> /home/deployer/.ssh/authorized_keys
+    echo "✅  Публичный SSH ключ добавлен для пользователя 'deployer'."
+fi
+
+# Устанавливаем правильные права и владельца
+chmod 700 /home/deployer/.ssh
+chmod 600 /home/deployer/.ssh/authorized_keys
+chown -R deployer:deployer /home/deployer/.ssh
+
 # --- 2. Установка Docker и Docker Compose ---
 echo "⚙️  [2/8] Установка Docker..."
 if ! command -v docker &> /dev/null
@@ -44,8 +76,8 @@ then
     curl -fsSL https://get.docker.com -o get-docker.sh
     sh get-docker.sh
     rm get-docker.sh
-    # Добавляем текущего пользователя в группу docker, чтобы избежать использования sudo
-    usermod -aG docker $(whoami)
+    # Добавляем пользователя deployer в группу docker, чтобы он мог управлять контейнерами
+    usermod -aG docker deployer
     echo "✅  Docker установлен. Примените изменения группы, перезайдя в сессию, или откройте новую."
 else
     echo "ℹ️  Docker уже установлен."
