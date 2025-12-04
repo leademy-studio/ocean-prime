@@ -60,7 +60,9 @@ REMOTE_COMMANDS='
 
 # Explicitly specify the path to the private key to avoid ambiguity
 # The -i flag tells SSH which identity file (private key) to use.
-IDENTITY_FILE="~/.ssh/id_ed25519"
+# The tilde (~) must be outside of quotes to be expanded to your home directory.
+IDENTITY_FILE=~/.ssh/id_ed25519
+
 ssh -i "${IDENTITY_FILE}" "${REMOTE_USER}@${REMOTE_HOST}" "${REMOTE_COMMANDS}"
 
 echo
