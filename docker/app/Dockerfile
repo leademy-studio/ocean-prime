@@ -12,6 +12,9 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Удаляем стандартный конфиг Nginx, чтобы избежать конфликтов
+RUN rm /etc/nginx/sites-enabled/default
+
 # --- Настройка PHP ---
 # Устанавливаем расширения, необходимые для October CMS / Laravel
 RUN docker-php-ext-install pdo_mysql zip gd
