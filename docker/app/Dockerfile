@@ -21,6 +21,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
+# --- Копирование исходного кода ---
+COPY ./src /var/www/html/
+
 # --- Копирование скрипта запуска ---
 # Копируем entrypoint.sh внутрь контейнера
 COPY docker/app/entrypoint.sh /entrypoint.sh
