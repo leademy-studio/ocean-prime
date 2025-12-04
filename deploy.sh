@@ -15,7 +15,7 @@
 
 # --- SETTINGS ---
 # User and address of your server
-REMOTE_USER="deployer" # Using a non-root user is a security best practice
+REMOTE_USER="root" # WARNING: Using root is a security risk. Switched as per direct request.
 REMOTE_HOST="109.196.102.71"
 
 # Path to the website folder ON THE SERVER
