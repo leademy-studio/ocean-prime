@@ -3,24 +3,12 @@
 # Выходим, если любая команда завершилась с ошибкой
 set -e
 
-# --- Отладка: смотрим, какие файлы есть в директории ---
-echo "==> Listing files in current directory:"
-ls -la
-
-# --- Первоначальная настройка приложения ---
-# Эти команды выполнятся только один раз или при необходимости
-
-# 1. Установка PHP-зависимостей
-if [ -f composer.json ]; then
-    echo "==> Installing Composer dependencies..."
-    composer install --no-interaction --prefer-dist --optimize-autoloader
-fi
-
-# 2. Выполнение миграций базы данных
-if [ -f artisan ]; then
-    echo "==> Running October CMS migrations..."
-    php artisan october:up
-fi
+# --- Настройка прав доступа ---
+# Веб-сервер (nginx/php-fpm) работает от пользователя www-data.
+# Даем ему права на запись в директорию /var/www/html,
+# чтобы установщик October CMS мог создавать файлы.
+chown -R www-data:www-data /var/www/html
+echo "==> Set ownership for /var/www/html"
 
 # --- Запуск основных сервисов ---
 
