@@ -1,26 +1,29 @@
-#!/bin/bash
+#!/bin/sh
+
+# Выходим, если любая команда завершилась с ошибкой
 set -e
 
-# Установка зависимостей
+# --- Первоначальная настройка приложения ---
+# Эти команды выполнятся только один раз или при необходимости
+
+# 1. Установка PHP-зависимостей
 if [ -f composer.json ]; then
-    echo "Installing PHP dependencies..."
+    echo "==> Installing Composer dependencies..."
     composer install --no-interaction --prefer-dist --optimize-autoloader
 fi
 
-# Миграции October CMS
+# 2. Выполнение миграций базы данных
 if [ -f artisan ]; then
-    echo "Running October CMS migrations..."
+    echo "==> Running October CMS migrations..."
     php artisan october:up
 fi
 
-# Настройка прав на storage и cache
-if [ -d storage ]; then
-    chmod -R 775 storage
-    chown -R www-data:www-data storage
-fi
-if [ -d bootstrap/cache ]; then
-    chmod -R 775 bootstrap/cache
-    chown -R www-data:www-data bootstrap/cache
-fi
+# --- Запуск основных сервисов ---
 
-exec "$@"
+# 1. Запускаем PHP-FPM в фоновом режиме
+php-fpm &
+
+# 2. Запускаем Nginx на переднем плане.
+# Это основной процесс, который будет удерживать контейнер в рабочем состоянии.
+echo "==> Starting Nginx..."
+exec nginx -g 'daemon off;'
