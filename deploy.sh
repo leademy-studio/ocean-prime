@@ -44,24 +44,36 @@ git push origin main # If your branch is master, change main to master
 
 echo "✅  Code successfully pushed to Git."
 
-# 3. Connect to the server and download updates
-echo "🚚  Step 2: Updating files on the server..."
+# 3. Synchronize files directly to the server using rsync
+echo "🚚  Step 2: Synchronizing files with the server..."
 
-# Form one large command to run on the server.
-REMOTE_COMMANDS='
-  cd ${REMOTE_PATH} && \
-  echo "--- 1. Getting the latest changes from Git" && \
-  git fetch origin main && \
-  git reset --hard origin/main && \
-  echo "--- 2. Rebuilding and restarting Docker containers" && \
-  docker compose up -d --build && \
-  echo "✅  Deployment of the code is complete."
-'
-
-# Explicitly specify the path to the private key to avoid ambiguity
-# The -i flag tells SSH which identity file (private key) to use.
-# The tilde (~) must be outside of quotes to be expanded to your home directory.
+# Path to the private key. The tilde (~) must be outside quotes to expand correctly.
 IDENTITY_FILE=~/.ssh/id_ed25519
+
+# rsync will copy local files to the server, excluding unnecessary ones.
+# -a: archive mode (preserves permissions, ownership, etc.)
+# -v: verbose (shows what's being copied)
+# -z: compress file data during the transfer
+# --exclude: folders to ignore
+# -e: specifies the remote shell to use (our ssh command with the key)
+rsync -avz \
+  --exclude ".git" \
+  --exclude ".idea" \
+  --exclude "node_modules" \
+  --exclude "vendor" \
+  -e "ssh -i ${IDENTITY_FILE}" \
+  ./ "${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_PATH}/"
+
+echo "✅  Files successfully synchronized."
+
+# 4. Connect to the server and restart Docker containers
+echo "⚙️  Step 3: Rebuilding and restarting containers on the server..."
+
+# The command now only needs to restart the services, as the files are already updated.
+REMOTE_COMMANDS="
+  cd ${REMOTE_PATH} && \
+  docker compose up -d --build
+"
 
 ssh -i "${IDENTITY_FILE}" "${REMOTE_USER}@${REMOTE_HOST}" "${REMOTE_COMMANDS}"
 
