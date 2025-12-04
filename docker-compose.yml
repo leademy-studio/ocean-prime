@@ -17,6 +17,46 @@ services:
     networks:
       - ocean_prime_network
 
+  # October CMS (PHP-FPM 8.4)
+  app:
+    build:
+      context: ./docker/app
+      dockerfile: Dockerfile
+    image: ocean-prime-app:latest
+    container_name: ocean_prime_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    platform: linux/amd64
+    volumes:
+      - /var/www/ocean-prime:/var/www/html
+      - ./docker/app/entrypoint.sh:/entrypoint.sh
+    networks:
+      - ocean_prime_network
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_DATABASE: october
+      DB_USERNAME: october
+      DB_PASSWORD: october
+    entrypoint: ["bash"]
+
+  # MySQL for October CMS
+  db:
+    image: mysql:8.0
+    container_name: ocean_prime_db
+    restart: unless-stopped
+    platform: linux/amd64
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: october
+      MYSQL_USER: october
+      MYSQL_PASSWORD: october
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - ocean_prime_network
+
   # Service Website (Nginx)
   website:
     image: ocean-prime-website/website:${TAG:-latest}
@@ -56,3 +96,6 @@ networks:
   ocean_prime_network:
     name: ocean_prime_network
     driver: bridge
+
+volumes:
+  db_data:
